@@ -14,14 +14,23 @@ public class ColorSensor {
 	public static String[] color_names = {"BACKGROUND", "GOAL_LINE", "CROSS", "EAST", "WEST", "NORTH", "SOUTH"};
 	private Color[] colors;
 	
+	public static final int BACKGROUND = 0;
+	public static final int GOAL_LINE = 1;
+	public static final int CROSS = 2;
+	public static final int EAST = 3;
+	public static final int WEST = 4;
+	public static final int NORTH = 5;
+	public static final int SOUTH = 6;
+	public static final int UNDEF = -1;
+	
 	private float[][] default_colors = {
-										{49.02F, 55.88F, 39.22F},	// BACKGROUND
-										{169.61F, 176.47F, 115.69F},	// GOAL_LINE
-										{12.75F, 15.69F, 9.80F},	// CROSS
-										{114.12F, 130F, 39, 21.57F},	// EAST
-										{73.52F, 15.68F, 8.82F},	// WEST
-										{8.82F, 17.64F, 27.45F},	// NORTH
-										{25.49F, 50.98F, 13.73F},	// SOUTH
+										{49.01F, 54.90F, 37.25F},	// BACKGROUND
+										{144.11F, 148.03F, 96.07F},	// GOAL_LINE
+										{10.78F, 11.76F, 7.84F},	// CROSS
+										{128.43F, 111.68F, 19.60F},	// EAST
+										{70.58F, 14.70F, 7.84F},	// WEST
+										{8.82F, 16.66F, 23.53F},	// NORTH
+										{26.47F, 50.00F, 13.72F},	// SOUTH
 									};
 	
 	public ColorSensor(Port p) {
@@ -43,7 +52,6 @@ public class ColorSensor {
 			System.out.println(c_name);
 			Button.ENTER.waitForPress();
 			float[] rgb = this.read();
-			// System.out.println("Size of rgb: " + rgb.length);
 			colors[i] = new Color(c_name, rgb);
 			System.out.println("RGB: " + rgb[0] + " " + rgb[1] + " " + rgb[2]);
 		}
@@ -59,7 +67,8 @@ public class ColorSensor {
 				idx = i;
 			}
 		}
-		System.out.println("Color: " + color_names[idx]);
+		if (dist > 20)
+			return BACKGROUND;
 		return idx;
 	}
 	

@@ -9,12 +9,12 @@ import lejos.utility.PilotProps;
 
 public class Motor {
 	
-	private static float WHEEL_DIAMETER = (float) 4.0;
+	private static float WHEEL_DIAMETER = (float) 5.6;
 	private static float TRACK_WIDTH = (float) 17.0;
 	
 	private RegulatedMotor rightMotor;
 	private RegulatedMotor leftMotor;
-	private DifferentialPilot motor;
+	public DifferentialPilot motor;
 	
 	public Motor(String lwheel, String rwheel) {
 		PilotProps pp = new PilotProps();
@@ -23,12 +23,16 @@ public class Motor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);  // PilotProps.getMotor(pp.getProperty(PilotProps.KEY_LEFTMOTOR, lwheel));
-    	rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);//PilotProps.getMotor(pp.getProperty(PilotProps.KEY_RIGHTMOTOR, rwheel));
+    	leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);  
+    	rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
 		motor = new DifferentialPilot(WHEEL_DIAMETER, TRACK_WIDTH, leftMotor, rightMotor, false);
-    	motor.setAcceleration(4000);
+    	motor.setAcceleration(500);
 		motor.setTravelSpeed(15);
 		motor.setRotateSpeed(45);
+	}
+	
+	public void calibrate() {
+		
 	}
 	
 	public void setRotateSpeed(int speed) {
@@ -39,12 +43,24 @@ public class Motor {
 		motor.setTravelSpeed(speed);
 	}
 	
-	public void rotate(int ang) {
-		motor.rotate(ang);
+	public void rotate(int ang, boolean async) {
+		motor.rotate(ang * 0.715, async);
 	}	
+	
+	public void rotate(int ang) {
+		motor.rotate(ang * 0.715);
+	}
 	
 	public void rotate() {
 		motor.rotateLeft();
+	}
+	
+	public boolean is_rotating() {
+		return motor.isMoving();
+	}
+	
+	public void rotate_right() {
+		motor.rotateRight();
 	}
 	
 	public void avanti() {
@@ -52,7 +68,11 @@ public class Motor {
 	}
 	
 	public void avanti(double dist) {
-		motor.travel(dist);;
+		motor.travel(dist);
+	}
+	
+	public void indietro(double dist) {
+		motor.travel(-dist);
 	}
 	
 	public void indietro() {

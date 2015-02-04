@@ -11,8 +11,7 @@ public class Eye {
 	private SampleProvider distance;
 	private SensorModes sensor;
 	
-	public Eye(String p) {
-		Port port = LocalEV3.get().getPort(p);
+	public Eye(Port port) {
 		sensor = new EV3UltrasonicSensor(port);
 		distance = sensor.getMode("Distance");
 		sample = new float[distance.sampleSize()];	
